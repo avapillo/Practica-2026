@@ -26,13 +26,13 @@
                 <button class="nav-btn active" data-url="{{ route('home') }}" title="Inicio">
                     <i class="fa-solid fa-house"></i>
                 </button>
-                <button class="nav-btn" data-url="{{ route('comandas.index') }}" title="Comandas / Pedidos">
-                    <i class="fa-solid fa-pen-to-square"></i>
+                <button class="nav-btn" data-url="{{ route('platos') }}" title="Platos">
+                    <i class="fa-solid fa-utensil-spoon"></i>
                 </button>
-                <button class="nav-btn" data-url="{{ route('mesas.index') }}" title="Mesas">
+                <button class="nav-btn" data-url="{{ route('control_mesa') }}" title="Control de Mesas">
                     <i class="fa-solid fa-utensils"></i>
                 </button>
-                <button class="nav-btn" data-url="{{ route('cocina.index') }}" title="Cocina">
+                <button class="nav-btn" data-url="{{ route('panel_pedido') }}" title="Pedidos para llevar">
                     <i class="fa-solid fa-bucket"></i>
                 </button>
                 <button class="nav-btn" data-url="{{ route('reportes.index') }}" title="Estadísticas / Reportes">
