@@ -1,121 +1,79 @@
+// 1. URL de tu propia API en Laravel (historial de caja)
+const DIRECCION_API = 'http://127.0.0.1:8000/api/historial-caja';
+
+// 2. Esperar a que el HTML esté listo en el navegador
 document.addEventListener('DOMContentLoaded', () => {
-
-    // 1. NAVEGACIÓN ENTRE PÁGINAS (BOTONES DE LA BARRA LATERAL)
-    const navButtons = document.querySelectorAll('.nav-btn');
-
-    navButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const targetUrl = this.getAttribute('data-url');
-
-            // Marcar botón activo dinámicamente
-            navButtons.forEach(btn => btn.classList.remove('active'));
-            this.classList.add('active');
-
-            if (targetUrl) {
-                // Redirección a la ruta de Laravel
-                window.location.href = targetUrl;
-            }
-        });
-    });
-
-    // 2. ACCIONES DE CAJA (ABRIR / CERRAR CAJA)
-    const btnAbrirCaja = document.getElementById('btn-abrir-caja');
-    const btnCerrarCaja = document.getElementById('btn-cerrar-caja');
-
-    btnAbrirCaja.addEventListener('click', () => {
-        // Ejemplo de petición fetch a backend de Laravel para abrir caja
-        fetch('/api/caja/abrir', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': getCsrfToken()
-            }
-        })
-        .then(res => res.json())
-        .then(data => {
-            alert(data.message || 'Caja abierta con éxito');
-        })
-        .catch(err => alert('Abrir caja activado (Modo local)'));
-    });
-
-    btnCerrarCaja.addEventListener('click', () => {
-        if(confirm('¿Está seguro de realizar el cierre de caja?')) {
-            fetch('/api/caja/cerrar', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': getCsrfToken()
-                }
-            })
-            .then(res => res.json())
-            .then(data => {
-                alert(data.message || 'Caja cerrada correctamente');
-            })
-            .catch(err => alert('Cerrar caja activado (Modo local)'));
-        }
-    });
-
-    // 3. CONSULTAR Y ACTUALIZAR DATOS EN TIEMPO REAL DESDE LA BASE DE DATOS
-    function cargarDatosDashboard() {
-        fetch('/api/dashboard/metricas')
-            .then(response => response.json())
-            .then(data => {
-                // Actualizar total ventas
-                if(data.ventasDia !== undefined) {
-                    document.getElementById('ventas-dia').textContent = `$${formatNumber(data.ventasDia)}`;
-                }
-
-                // Actualizar Tabla de Ventas
-                if(data.ventas) {
-                    actualizarTablaVentas(data.ventas);
-                }
-
-                // Actualizar Lista Mas Vendidos
-                if(data.masVendidos) {
-                    actualizarMasVendidos(data.masVendidos);
-                }
-            })
-            .catch(error => console.log('Servicio API no conectado aun, usando datos estáticos del layout.'));
-    }
-
-    // Funciones Auxiliares
-    function actualizarTablaVentas(ventas) {
-        const tbody = document.getElementById('tabla-ventas-body');
-        tbody.innerHTML = '';
-
-        ventas.forEach(venta => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>${venta.fecha}</td>
-                <td>${venta.hora}</td>
-                <td>$${formatNumber(venta.total)}</td>
-            `;
-            tbody.appendChild(tr);
-        });
-    }
-
-    function actualizarMasVendidos(items) {
-        const list = document.getElementById('lista-mas-vendidos');
-        list.innerHTML = '';
-
-        items.forEach(item => {
-            const li = document.createElement('li');
-            li.innerHTML = `
-                <span class="product-name">${item.nombre}</span>
-                <span class="product-qty">${item.cantidad}</span>
-            `;
-            list.appendChild(li);
-        });
-    }
-
-    function formatNumber(num) {
-        return new Intl.NumberFormat('es-AR').format(num);
-    }
-
-    function getCsrfToken() {
-        return document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
-    }
-
-    // Opcional: Actualizar datos automáticamente cada 30 segundos
-    // setInterval(cargarDatosDashboard, 30000);
+  solicitarDatosServidor();
 });
+
+// 3. Función que conecta con tu API de Laravel
+function solicitarDatosServidor() {
+  const etiquetaEstado = document.getElementById('estado-api');
+
+  // Hacemos la llamada HTTP (GET) a tu servidor local
+  fetch(DIRECCION_API)
+    .then(respuestaBruta => {
+      // Si el servidor responde con un error (ej. 404 o 500)
+      if (!respuestaBruta.ok) {
+        throw new Error(`Error en el servidor. Código: ${respuestaBruta.status}`);
+      }
+      // Si todo está bien, transformamos la respuesta JSON en objetos de JavaScript
+      return respuestaBruta.json();
+    })
+    .then(listaDeRegistros => {
+      // Enviamos los datos recibidos de la base de datos para dibujar la tabla
+      construirFilasTabla(listaDeRegistros);
+
+      // Actualizamos el mensaje de éxito en la pantalla
+      etiquetaEstado.textContent = '✅ Datos sincronizados con éxito';
+      etiquetaEstado.style.color = '#16a34a'; // Color verde
+    })
+    .catch(error => {
+      // Si no hay internet, el servidor está apagado o la API falló, entra aquí
+      console.error('Detalles del error:', error);
+      etiquetaEstado.textContent = '❌ Error al conectar con el servidor';
+      etiquetaEstado.style.color = '#dc2626'; // Color rojo
+    });
+}
+
+// 4. Función encargada de tomar los datos de la caja e inyectarlos en el HTML
+function construirFilasTabla(registrosCaja) {
+  // Seleccionamos el cuerpo de la tabla (donde van los datos)
+  const cuerpoTabla = document.querySelector('#tabla-datos tbody');
+
+  // Limpiamos cualquier texto previo o fila vieja
+  cuerpoTabla.innerHTML = '';
+
+  // Recorremos el arreglo de registros de la base de datos uno por uno
+  registrosCaja.forEach(registro => {
+    // Creamos un elemento fila <tr> en memoria
+    const nuevaFila = document.createElement('tr');
+
+    // Procesamos el campo 'momento_cierre' para separar Fecha y Hora limpiamente
+    const fechaObjeto = new Date(registro.momento_cierre);
+
+    const fechaFormateada = fechaObjeto.toLocaleDateString('es-AR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    });
+
+    const horaFormateada = fechaObjeto.toLocaleTimeString('es-AR', {
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+
+    // Formateamos el monto monetario para que incluya puntos de miles (ej: 150.000)
+    const montoFormateado = parseFloat(registro.monto_total).toLocaleString('es-CL');
+
+    // Le agregamos las celdas usando las propiedades reales de tu MySQL
+    nuevaFila.innerHTML = `
+      <td><strong>${fechaFormateada}</strong></td>
+      <td>${horaFormateada}</td>
+      <td><strong>$${montoFormateado}</strong></td>
+    `;
+
+    // Metemos la fila terminada dentro del cuerpo de la tabla en el HTML
+    cuerpoTabla.appendChild(nuevaFila);
+  });
+}

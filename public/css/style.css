@@ -1,0 +1,121 @@
+/* ==========================================
+   ESTILOS GENERALES Y RESETEO
+   ========================================== */
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f1f5f9; /* Fondo gris claro para la aplicación */
+  color: #000000; /* Color del texto de las tabla */
+}
+
+/* Contenedor que usa Flexbox para poner el menú a la izquierda y el contenido a la derecha */
+.contenedor-sitio {
+  display: flex;
+  min-height: 100vh; /* Ocupa el 100% de la altura de la pantalla */
+}
+
+/* ==========================================
+   ESTILOS DE LA BARRA LATERAL (MENU)
+   ========================================== */
+.barra-lateral {
+  width: 260px; /* Ancho fijo del menú lateral */
+  background-color: #0f172a; /* Azul muy oscuro/negro */
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.logo-sistema {
+  padding: 20px;
+  text-align: center;
+  border-bottom: 3px solid #1e293b; /* Línea divisoria sutil */
+}
+
+.logo-sistema h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #38bdf8; /* Azul celeste llamativo */
+}
+
+.menu-navegacion {
+  display: flex;
+  flex-direction: column;
+  padding: 15px 0;
+}
+
+/* Estilo para cada botón/enlace del menú */
+.opcion-menu {
+  color: #94a3b8; /* Gris claro para texto no seleccionado */
+  padding: 12px 20px;
+  text-decoration: none; /* Quita el subrayado */
+  display: block;
+  transition: all 0.3s ease; /* Suaviza el cambio de color */
+}
+
+/* Cuando pasas el mouse por encima o la opción está activa */
+.opcion-menu:hover, .opcion-menu.activa {
+  background-color: #1e293b; /* Fondo un poco más claro */
+  color: #ffffff;            /* Texto blanco */
+  border-left: 4px solid #38bdf8; /* Barra celeste decorativa a la izquierda */
+}
+
+/* ==========================================
+   ESTILOS DEL CONTENIDO PRINCIPAL
+   ========================================== */
+.contenido-principal {
+  flex-top: 1; /* Ocupa todo el espacio restante de la pantalla */
+  width: 100%;
+  padding: 10px;
+}
+
+.barra-superior {
+  display: flex;
+  justify-content: space-between; /* Alinea el título a la izquierda y el estado a la derecha */
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.mensaje-estado {
+  font-weight: bold;
+  color: #2563eb; /* Azul por defecto */
+}
+
+/* ==========================================
+   ESTILOS DE LA TABLA
+   ========================================== */
+.seccion-tabla {
+  background: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  overflow: hidden; /* Mantiene las esquinas redondeadas */
+  border-color: #0f172a;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse; /* Quita espacios entre celdas */
+}
+
+th, td {
+  padding: 14px 20px;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+th {
+  background-color: #5f7fb2; /* Fondo oscuro para los encabezados */
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* Efecto cebra: cambia el fondo en filas alternas */
+tr:nth-child(even) {
+  background-color: #f8fafc;
+}
+
+/* Efecto hover al pasar el ratón sobre una fila */
+tr:hover {
+  background-color: #577796;
+}
