@@ -12,6 +12,5 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-
 // 2. Agregas tu nueva ruta aquí abajo
 Route::get('/historial-caja', [HistorialCajaController::class, 'index']);

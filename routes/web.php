@@ -8,6 +8,6 @@ Route::get('/Inicio', function () {
 })->name('home');
 
 // Rutas nombradas para que los botones de la barra lateral no den error
-Route::get('/Platos', function () {
-    return view('interfaz_platos');
-})->name('interfaz_platos');
+Route::get('/Producto', function () {
+    return view('interfaz_producto');
+})->name('interfaz_producto');

@@ -1,0 +1,268 @@
+/* ==========================================
+   ESTILOS GENERALES Y RESETEO
+   ========================================== */
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f1f5f9; /* Fondo gris claro para la aplicación */
+  color: #334155;
+}
+
+/* Contenedor que usa Flexbox para poner el menú a la izquierda y el contenido a la derecha */
+.contenedor-sitio {
+  display: flex;
+  min-height: 100vh; /* Ocupa el 100% de la altura de la pantalla */
+}
+
+/* ==========================================
+   ESTILOS DE LA BARRA LATERAL (MENU)
+   ========================================== */
+.barra-lateral {
+  width: 260px; /* Ancho fijo del menú lateral */
+  background-color: #0f172a; /* Azul muy oscuro/negro */
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.logo-sistema {
+  padding: 20px;
+  text-align: center;
+  border-bottom: 3px solid #1e293b; /* Línea divisoria sutil */
+}
+
+.logo-sistema h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #38bdf8; /* Azul celeste llamativo */
+}
+
+.menu-navegacion {
+  display: flex;
+  flex-direction: column;
+  padding: 15px 0;
+}
+
+/* Estilo para cada botón/enlace del menú */
+.opcion-menu {
+  color: #93a9c8; /* Gris claro para texto no seleccionado */
+  padding: 12px 20px;
+  text-decoration: none; /* Quita el subrayado */
+  display: block;
+  transition: all 0.3s ease; /* Suaviza el cambio de color */
+}
+
+/* Cuando pasas el mouse por encima o la opción está activa */
+.opcion-menu:hover, .opcion-menu.activa {
+  background-color: #1e293b; /* Fondo un poco más claro */
+  color: #ffffff;            /* Texto blanco */
+  border-left: 4px solid #38bdf8; /* Barra celeste decorativa a la izquierda */
+}
+
+/* ==========================================
+   NUEVOS ESTILOS: CONTENIDO PRINCIPAL Y PANELES
+   ========================================== */
+
+/* Layout para el contenido al costado del menú */
+.contenido-principal {
+  flex: 1;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.encabezado-seccion {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 15px;
+}
+
+.encabezado-seccion h2 {
+  margin: 0;
+  font-size: 1.8rem;
+  color: #0f172a;
+}
+
+/* Botón Nuevo Producto */
+.btn-agregar {
+  background-color: #38bdf8;
+  color: #0f172a;
+  border: none;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-agregar:hover {
+  background-color: #0ea5e9;
+  color: #ffffff;
+}
+
+/* Grilla responsive para las Tarjetas */
+.grilla-productos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
+}
+
+/* Estilos de las Tarjetas de Producto */
+.tarjeta-producto {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.foto-producto {
+  width: 100%;
+  height: 180px;
+  background-color: #0f172a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #64748b;
+  font-size: 3rem;
+}
+
+.info-producto {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.info-producto h4 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #1e293b;
+}
+
+.info-producto p {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #0ea5e9;
+  font-weight: bold;
+}
+
+/* Botones Modificar y Eliminar en la tarjeta */
+.acciones-tarjeta {
+  display: flex;
+  border-top: 1px solid #e2e8f0;
+}
+
+.btn-accion {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.btn-modificar {
+  color: #0ea5e9;
+}
+
+.btn-modificar:hover {
+  background-color: #f0f9ff;
+}
+
+.btn-eliminar {
+  color: #ef4444;
+  border-left: 1px solid #e2e8f0;
+}
+
+.btn-eliminar:hover {
+  background-color: #fef2f2;
+}
+
+/* ==========================================
+   ESTILOS DEL SUBPANEL MODAL (FORMULARIO)
+   ========================================== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(15, 23, 42, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-content {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 450px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.modal-content h3 {
+  margin-top: 0;
+  color: #0f172a;
+  margin-bottom: 20px;
+}
+
+.grupo-campo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.grupo-campo label {
+  font-weight: 600;
+  color: #475569;
+}
+
+.grupo-campo input {
+  padding: 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.modal-botones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.btn-cancelar {
+  background-color: #e2e8f0;
+  color: #475569;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-guardar {
+  background-color: #0f172a;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Clase de utilidad para ocultar/mostrar elementos */
+.hidden {
+  display: none !important;
+}

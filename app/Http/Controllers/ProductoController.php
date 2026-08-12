@@ -11,8 +11,6 @@ class HistorialCajaController extends Controller
     /**
      * Devuelve todos los registros del historial de caja.
      */
-    public function vistaPlatos(): JsonResponse
-    {
-        return view('platos_control');
-    }
+
 }
+
