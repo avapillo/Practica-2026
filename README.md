@@ -1,4 +1,4 @@
-<p align="center"><a></a>RestoGesto</p>
+<p align="center", font-size= 1.2rem><a>RestoGesto</a></p>
 
 <p align="center">
 <a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
