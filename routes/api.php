@@ -2,15 +2,13 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-// 1. Importas tu controlador aquí arriba
+
+// 1. IMPORTANTE: Importa tu ProductoController aquí arriba junto al de Caja
 use App\Http\Controllers\HistorialCajaController;
+use App\Http\Controllers\ProductoController;
 
-// Scoloca todas alas apis que se van a usar
-
-// Esta es la ruta de ejemplo que ya venía en tu archivo (déjala ahí)
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
-
-// 2. Agregas tu nueva ruta aquí abajo
+// Ruta que ya tenías
 Route::get('/historial-caja', [HistorialCajaController::class, 'index']);
+
+// 2. AGREGA ESTA RUTA: Es la que procesará el formulario con JavaScript (POST)
+Route::post('/registro-producto', [ProductoController::class, 'registroProducto']);

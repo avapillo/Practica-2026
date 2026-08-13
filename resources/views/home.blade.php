@@ -20,12 +20,12 @@
 
       <!-- Opciones del menú -->
       <nav class="menu-navegacion">
-        <a href="Inicio" class="opcion-menu activa">📊 Panel Principal</a>
-        <a href="#" class="opcion-menu activa"> Mesas</a>
-        <a href="Producto" class="opcion-menu">👥 Producto</a>
-        <a href="#" class="opcion-menu">🐟 Productos / Menú</a>
-        <a href="#" class="opcion-menu">💰 Ventas</a>
-        <a href="#" class="opcion-menu">⚙️ Configuración</a>
+        <a href="Inicio" class="opcion-menu activs">Panel Principal</a>
+        <a href="#" class="opcion-menu"> Mesas</a>
+        <a href="Producto" class="opcion-menu">Producto</a>
+        <a href="#" class="opcion-menu">Productos / Menú</a>
+        <a href="#" class="opcion-menu">Ventas</a>
+        <a href="#" class="opcion-menu">Configuración</a>
       </nav>
     </aside>
 
