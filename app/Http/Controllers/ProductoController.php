@@ -2,45 +2,43 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Producto; // Importación correcta de tu modelo
+use App\Models\Producto;
 use Illuminate\Http\Request;
 
 class ProductoController extends Controller
 {
-    // 1. Muestra la pantalla principal de productos
+    // Muestra la pantalla principal de productos
     public function mostrarProducto()
     {
         $productos = Producto::all();
         return view('interfaz_producto', compact('productos'));
-    } // <-- Esta llave cierra mostrarProducto
+    }
 
-    // 2. Registra el nuevo producto desde el modal
+    // Registra el nuevo producto de forma tradicional
     public function registroProducto(Request $request)
     {
+        // Validamos de manera clásica
         $request->validate([
             'nombre' => 'required|string|max:255',
             'precio' => 'required|integer|min:0',
-            'imagen' => 'nullable|image|max:10240',
+            'imagen' => 'nullable|image|max:20240', // Hasta 10MB
         ]);
 
-        $imagenPath = null;
+        $imagen = null;
 
         if ($request->hasFile('imagen')) {
-            $fila = $request->file('imagen');
-            $imagenPath = $fila->store('productos', 'public');
+            // Guardamos físicamente en storage/app/public/productos
+            $imagen = $request->file('imagen')->store('productos', 'public');
         }
 
-        $producto = Producto::create([
+        // Creamos el registro en MySQL
+        Producto::create([
             'nombre' => $request->nombre,
             'precio' => $request->precio,
-            'imagen' => $imagenPath,
+            'imagen' => $imagen,
         ]);
 
-        return response()->json([
-            'mensaje'   => '¡Producto registrado con éxito!',
-            'product'   => $producto,
-            'image_url' => $producto->imagen ? asset('storage/' . $producto->imagen) : null
-        ], 201);
-    } // <-- Esta llave cierra registroProducto
-
-} // <-- Esta llave cierra la CLASE entera del controlador
+        // Redireccionamos a la lista, recargando la página con un estado de éxito
+        return redirect()->route('producto.index')->with('status', '¡Producto registrado con éxito!');
+    }
+}

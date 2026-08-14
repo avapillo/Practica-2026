@@ -3,52 +3,52 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Panel de Control - Cevichería Gabriel</title>
-  <!-- Enlace al archivo de estilos CSS en la carpeta public/css -->
+  <title>Panel de Control - Sandwichería Gabriel</title>
   <link rel="stylesheet" href="{{ asset('css/style_producto.css') }}">
 </head>
 <body>
 
-  <!-- 1. SOLUCIÓN AL ERROR: Token de seguridad oculto que JavaScript leerá automáticamente -->
-  <input type="hidden" id="csrfToken" value="{{ csrf_token() }}">
-
-  <!-- CONTENEDOR PRINCIPAL -->
   <div class="contenedor-sitio">
 
     <!-- BARRA LATERAL (MENU) -->
     <aside class="barra-lateral">
       <div class="logo-sistema">
-        <h3>Sanwichería Gabriel</h3>
+        <h3>Sandwichería Gabriel</h3>
       </div>
       <nav class="menu-navegacion">
-        <a href="Inicio" class="opcion-menu">Panel Principal</a>
+        <a href="/" class="opcion-menu">Principal</a>
         <a href="#" class="opcion-menu"> Mesas</a>
-        <a href="Producto" class="opcion-menu activa">Producto</a>
+        <a href="{{ route('producto.index') }}" class="opcion-menu activa">Producto</a>
         <a href="#" class="opcion-menu">Ventas</a>
-        <a href="#" class="opcion-menu">Configuración</a>
+        <a href="#" class="opcion-menu">Para Llevar</a>
       </nav>
     </aside>
 
-    <!-- CONTENIDO PRINCIPAL AL COSTADO DEL MENU -->
+    <!-- CONTENIDO PRINCIPAL -->
     <main class="contenido-principal">
       <header class="encabezado-seccion">
         <h2>Gestión de Productos</h2>
-        <!-- Botón para agregar producto -->
+
+        <!-- Notificación de éxito nativa de Laravel si se guardó correctamente -->
+        @if (session('status'))
+          <div style="background: #d4edda; color: #155724; padding: 10px; margin-bottom: 10px; border-radius: 5px;">
+            {{ session('status') }}
+          </div>
+        @endif
+
         <button id="btnAbrirModal" class="btn-agregar">➕ Nuevo Producto</button>
       </header>
 
       <!-- GRILLA DE TARJETAS DE PRODUCTOS -->
       <section id="grillaProductos" class="grilla-productos">
 
-        <!-- 2. SOLUCIÓN PARA MOSTRAR: PHP dibuja los productos que ya existen en tu base de datos -->
         @foreach ($productos as $producto)
           <div class="tarjeta-producto" id="producto-{{ $producto->id }}">
             <div class="foto-producto">
               @if($producto->imagen)
-                <!-- Si el producto tiene imagen guardada en la BD, la muestra -->
+                <!-- Render dinámico y correcto del archivo real subido -->
                 <img src="{{ asset('storage/' . $producto->imagen) }}" alt="{{ $producto->nombre }}" style="width:100%; height:100%; object-fit:cover;">
               @else
-                <!-- Si no tiene imagen, muestra el icono por defecto -->
                 🖼️
               @endif
             </div>
@@ -58,8 +58,7 @@
             </div>
             <div class="acciones-tarjeta">
               <button class="btn-accion btn-modificar">✏️ Modificar</button>
-              <!-- Al hacer clic, le manda el ID correcto de la BD a tu función global de JavaScript -->
-              <button class="btn-accion btn-eliminar" onclick="eliminarProducto({{ $producto->id }})">🗑️ Eliminar</button>
+              <button class="btn-accion btn-eliminar">🗑️ Eliminar</button>
             </div>
           </div>
         @endforeach
@@ -69,29 +68,40 @@
 
   </div>
 
-  <!-- SUBPANEL / MODAL OCULTO PARA AGREGAR PRODUCTO -->
+  <!-- MODAL / SUBPANEL OCULTO -->
   <div id="modalProducto" class="modal-overlay hidden">
     <div class="modal-content">
       <h3>Agregar Nuevo Producto</h3>
 
-      <!-- 3. SOLUCIÓN PARA IMÁGENES: Agregamos enctype para que el formulario acepte archivos físicos -->
-      <form id="formProducto" enctype="multipart/form-data">
+      <!-- El formulario ahora envía directamente los datos usando métodos Web tradicionales -->
+      <form id="formProducto" action="{{ route('producto.store') }}" method="POST" enctype="multipart/form-data">
+
+        <!-- Token de protección obligatorio para peticiones POST en Laravel -->
+        @csrf
+
         <div class="grupo-campo">
           <label for="nombre">Nombre del Producto:</label>
-          <input type="text" id="nombre" required placeholder="Ej: Lomito Completo">
-        </div>
-        <div class="grupo-campo">
-          <label for="precio">Precio ($):</label>
-          <input type="number" id="precio" required placeholder="Ej: 3500">
+          <!-- AGREGADO: atributo name="nombre" para que PHP lo reciba -->
+          <input type="text" id="nombre" name="nombre" required placeholder="Ej: Lomito Completo" value="{{ old('nombre') }}">
+          @error('nombre') <span style="color:red">{{ $message }}</span> @enderror
         </div>
 
-        <!-- 4. SOLUCIÓN: Agregamos el campo input de tipo file con id="imagen" en español -->
+        <div class="grupo-campo">
+          <label for="precio">Precio ($):</label>
+          <!-- AGREGADO: atributo name="precio" -->
+          <input type="number" id="precio" name="precio" required placeholder="Ej: 3500" value="{{ old('precio') }}">
+          @error('precio') <span style="color:red">{{ $message }}</span> @enderror
+        </div>
+
         <div class="grupo-campo">
           <label for="imagen">Imagen del Producto:</label>
-          <input type="file" id="imagen" accept="image/*">
+          <!-- AGREGADO: atributo name="imagen" -->
+          <input type="file" id="imagen" name="imagen" accept="image/*">
+          @error('imagen') <span style="color:red">{{ $message }}</span> @enderror
         </div>
 
         <div class="modal-botones">
+          <!-- Cambiamos a type="button" para que el de cancelar no intente enviar el formulario -->
           <button type="button" id="btnCerrarModal" class="btn-cancelar">Cancelar</button>
           <button type="submit" class="btn-guardar">Guardar Producto</button>
         </div>
@@ -99,7 +109,6 @@
     </div>
   </div>
 
-  <!-- Enlace al JavaScript en public/js/productos.js -->
   <script src="{{ asset('js/producto.js') }}"></script>
 </body>
 </html>

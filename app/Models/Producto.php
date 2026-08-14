@@ -13,4 +13,8 @@ class Producto extends Model
 
     // Campos autorizados para guardar en español
     protected $fillable = ["nombre", "precio", "imagen"];
+
+    // Bloqueo de registro de timestamps automatica,
+    // Se debe de modifcar la tabla si se decear guardar esos datos
+    public $timestamps = false;
 }
