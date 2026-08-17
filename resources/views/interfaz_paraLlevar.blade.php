@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Panel de Control - Cevichería Gabriel</title>
   <!-- Enlace al archivo de estilos CSS en la carpeta public/css -->
-  <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/style_paraLlevar.css') }}">
 </head>
 <body>
 
@@ -28,33 +28,5 @@
       </nav>
     </aside>
 
-    <!-- CONTENIDO PRINCIPAL: Todo lo que cambia según la pantalla -->
-    <main class="contenido-principal">
-      <header class="barra-superior">
-        <h2>Historial de Caja</h2>
-        <div id="estado-api" class="mensaje-estado">Cargando datos de la API...</div>
-      </header>
-
-      <!-- SECCIÓN DE LA TABLA -->
-      <section class="seccion-tabla">
-        <table id="tabla-datos">
-          <thead>
-            <tr>
-              <th>Fecha</th>
-              <th>Hora de Cierre</th>
-              <th>Monto Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Las filas se inyectarán aquí dinámicamente usando JavaScript -->
-          </tbody>
-        </table>
-      </section>
-    </main>
-
-  </div>
-
-  <!-- Enlace al archivo JavaScript en la carpeta public/js -->
-  <script src="{{ asset('js/home.js') }}"></script>
 </body>
 </html>

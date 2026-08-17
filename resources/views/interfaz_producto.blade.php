@@ -17,10 +17,10 @@
       </div>
       <nav class="menu-navegacion">
         <a href="/" class="opcion-menu">Principal</a>
-        <a href="#" class="opcion-menu"> Mesas</a>
+        <a href="Mesas" class="opcion-menu"> Mesas</a>
         <a href="{{ route('producto.index') }}" class="opcion-menu activa">Producto</a>
         <a href="#" class="opcion-menu">Ventas</a>
-        <a href="#" class="opcion-menu">Para Llevar</a>
+        <a href="ProductoLlevar" class="opcion-menu">Para Llevar</a>
       </nav>
     </aside>
 

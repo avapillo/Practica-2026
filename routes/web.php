@@ -8,6 +8,15 @@ Route::get('/', function () {
     return view('home');
 })->name('home');
 
+// Ruta para mostrar el control de las mesas
+Route::get('/Mesas', function (){
+    return view('interfaz_mesa');
+})->name('intefaz_mesa');
+
+// Producto para llevar
+Route::get('/ProductoLlevar', function (){
+    return view('interfaz_paraLlevar');
+})->name('interfaz_paraLlevar');
 
 // Ruta para mostrar el formulario de registro de productos
 // Pantalla principal del catálogo
