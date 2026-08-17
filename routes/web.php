@@ -9,8 +9,12 @@ Route::get('/', function () {
 })->name('home');
 
 
+// Ruta para mostrar el formulario de registro de productos
 // Pantalla principal del catálogo
 Route::get('/Producto', [ProductoController::class, 'mostrarProducto'])->name('producto.index');
-
-// Ruta web para procesar el formulario tradicional
+// Llama al metodo de registro producto en ProductoController.php
 Route::post('/Producto/guardar', [ProductoController::class, 'registroProducto'])->name('producto.store');
+
+Route::post('/Producto/modificar', [ProductoController::class, 'modificarProducto'])->name('producto.update');
+
+Route::delete('/Producto/{id}/eliminar', [ProductoController::class, 'eliminarProducto'])->name('producto.destroy');

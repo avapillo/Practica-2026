@@ -29,9 +29,9 @@
       <header class="encabezado-seccion">
         <h2>Gestión de Productos</h2>
 
-        <!-- Notificación de éxito nativa de Laravel si se guardó correctamente -->
+        <!-- Mensaje con id "mensajeStatus" para que JS lo identifique y lo desaparezca -->
         @if (session('status'))
-          <div style="background: #d4edda; color: #155724; padding: 10px; margin-bottom: 10px; border-radius: 5px;">
+          <div id="mensajeStatus" style="background: #d4edda; color: #155724; padding: 10px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #c3e6cb;">
             {{ session('status') }}
           </div>
         @endif
@@ -46,19 +46,28 @@
           <div class="tarjeta-producto" id="producto-{{ $producto->id }}">
             <div class="foto-producto">
               @if($producto->imagen)
-                <!-- Render dinámico y correcto del archivo real subido -->
                 <img src="{{ asset('storage/' . $producto->imagen) }}" alt="{{ $producto->nombre }}" style="width:100%; height:100%; object-fit:cover;">
               @else
                 🖼️
               @endif
             </div>
+
             <div class="info-producto">
               <h4>{{ $producto->nombre }}</h4>
               <p>${{ $producto->precio }}</p>
             </div>
+
             <div class="acciones-tarjeta">
-              <button class="btn-accion btn-modificar">✏️ Modificar</button>
-              <button class="btn-accion btn-eliminar">🗑️ Eliminar</button>
+              <button class="btn-accion btn-modificar"
+                      data-id="{{ $producto->id }}"
+                      data-nombre="{{ $producto->nombre }}"
+                      data-precio="{{ $producto->precio }}">✏️ Modificar</button>
+
+              <form action="{{ route('producto.destroy', $producto->id) }}" method="POST" onsubmit="return confirm('¿Seguro que deseas eliminar este producto?')" style="display:inline;">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn-accion btn-eliminar">🗑️ Eliminar</button>
+              </form>
             </div>
           </div>
         @endforeach
@@ -68,42 +77,67 @@
 
   </div>
 
-  <!-- MODAL / SUBPANEL OCULTO -->
+  <!-- MODAL 1: REGISTRAR PRODUCTO -->
   <div id="modalProducto" class="modal-overlay hidden">
     <div class="modal-content">
       <h3>Agregar Nuevo Producto</h3>
 
-      <!-- El formulario ahora envía directamente los datos usando métodos Web tradicionales -->
       <form id="formProducto" action="{{ route('producto.store') }}" method="POST" enctype="multipart/form-data">
-
-        <!-- Token de protección obligatorio para peticiones POST en Laravel -->
         @csrf
 
         <div class="grupo-campo">
           <label for="nombre">Nombre del Producto:</label>
-          <!-- AGREGADO: atributo name="nombre" para que PHP lo reciba -->
           <input type="text" id="nombre" name="nombre" required placeholder="Ej: Lomito Completo" value="{{ old('nombre') }}">
-          @error('nombre') <span style="color:red">{{ $message }}</span> @enderror
+          @error('nombre') <span style="color:red; font-size:12px;">{{ $message }}</span> @enderror
         </div>
 
         <div class="grupo-campo">
           <label for="precio">Precio ($):</label>
-          <!-- AGREGADO: atributo name="precio" -->
           <input type="number" id="precio" name="precio" required placeholder="Ej: 3500" value="{{ old('precio') }}">
-          @error('precio') <span style="color:red">{{ $message }}</span> @enderror
+          @error('precio') <span style="color:red; font-size:12px;">{{ $message }}</span> @enderror
         </div>
 
         <div class="grupo-campo">
           <label for="imagen">Imagen del Producto:</label>
-          <!-- AGREGADO: atributo name="imagen" -->
           <input type="file" id="imagen" name="imagen" accept="image/*">
-          @error('imagen') <span style="color:red">{{ $message }}</span> @enderror
+          @error('imagen') <span style="color:red; font-size:12px;">{{ $message }}</span> @enderror
         </div>
 
         <div class="modal-botones">
-          <!-- Cambiamos a type="button" para que el de cancelar no intente enviar el formulario -->
           <button type="button" id="btnCerrarModal" class="btn-cancelar">Cancelar</button>
           <button type="submit" class="btn-guardar">Guardar Producto</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 2: MODIFICAR PRODUCTO -->
+  <div id="modalEditarProducto" class="modal-overlay hidden">
+    <div class="modal-content">
+      <h3>Modificar Producto</h3>
+
+      <form action="{{ route('producto.update') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        <input type="hidden" id="edit_id" name="id">
+
+        <div class="grupo-campo">
+          <label for="edit_nombre">Nombre del Producto:</label>
+          <input type="text" id="edit_nombre" name="nombre" required>
+        </div>
+
+        <div class="grupo-campo">
+          <label for="edit_precio">Precio ($):</label>
+          <input type="number" id="edit_precio" name="precio" required>
+        </div>
+
+        <div class="grupo-campo">
+          <label for="edit_imagen">Nueva Imagen (Opcional):</label>
+          <input type="file" id="edit_imagen" name="imagen" accept="image/*">
+        </div>
+
+        <div class="modal-botones">
+          <button type="button" id="btnCerrarModalEditar" class="btn-cancelar">Cancelar</button>
+          <button type="submit" class="btn-guardar">Guardar Cambios</button>
         </div>
       </form>
     </div>
