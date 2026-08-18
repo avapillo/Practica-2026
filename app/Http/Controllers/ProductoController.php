@@ -3,23 +3,38 @@
 namespace App\Http\Controllers;
 
 use App\Models\Producto;
+use App\Models\Categoria;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class ProductoController extends Controller
 {
-    public function mostrarProducto()
+    public function mostrarProducto(Request $request)
     {
-        $productos = Producto::all();
-        return view('interfaz_producto', compact('productos'));
+        $categoriaSeleccionada = $request->query('fk_id_categoira', 'todas');
+
+        // Traemos las categorías de la BD
+        $categorias = Categoria::all();
+
+        // Carga de productos con su relación
+        if ($categoriaSeleccionada === 'todas') {
+            $productos = Producto::with('categoria')->get();
+        } else {
+            $productos = Producto::with('categoria')
+                ->where('fk_id_categoira', $categoriaSeleccionada)
+                ->get();
+        }
+
+        return view('interfaz_producto', compact('productos', 'categorias', 'categoriaSeleccionada'));
     }
 
     public function registroProducto(Request $request)
     {
         $request->validate([
-            'nombre' => 'required|string|max:255',
-            'precio' => 'required|integer|min:0',
-            'imagen' => 'nullable|image|max:20240',
+            'nombre'          => 'required|string|max:255',
+            'precio'          => 'required|integer|min:0',
+            'fk_id_categoira' => 'required|exists:categoria,id',
+            'imagen'          => 'nullable|image|max:20240',
         ]);
 
         $imagen = null;
@@ -28,42 +43,42 @@ class ProductoController extends Controller
         }
 
         Producto::create([
-            'nombre' => $request->nombre,
-            'precio' => $request->precio,
-            'imagen' => $imagen,
+            'nombre'          => $request->nombre,
+            'precio'          => $request->precio,
+            'fk_id_categoira' => $request->fk_id_categoira,
+            'imagen'          => $imagen,
         ]);
 
         return redirect()->route('producto.index')->with('status', '¡Producto registrado con éxito!');
     }
 
-    // NUEVO: Modificar producto existente
     public function modificarProducto(Request $request)
     {
         $request->validate([
-            'id'     => 'required|exists:productos,id',
-            'nombre' => 'required|string|max:255',
-            'precio' => 'required|integer|min:0',
-            'imagen' => 'nullable|image|max:20240',
+            'id'              => 'required|exists:productos,id',
+            'nombre'          => 'required|string|max:255',
+            'precio'          => 'required|integer|min:0',
+            'fk_id_categoira' => 'required|exists:categorias,id',
+            'imagen'          => 'nullable|image|max:20240',
         ]);
 
         $producto = Producto::findOrFail($request->id);
 
         if ($request->hasFile('imagen')) {
-            // Borramos la foto anterior para no llenar el disco de basura
             if ($producto->imagen) {
                 Storage::disk('public')->delete($producto->imagen);
             }
             $producto->imagen = $request->file('imagen')->store('productos', 'public');
         }
 
-        $producto->nombre = $request->nombre;
-        $producto->precio = $request->precio;
+        $producto->nombre          = $request->nombre;
+        $producto->precio          = $request->precio;
+        $producto->fk_id_categoira = $request->fk_id_categoira;
         $producto->save();
 
         return redirect()->route('producto.index')->with('status', '¡Producto modificado con éxito!');
     }
 
-    // Eliminar producto
     public function eliminarProducto($id)
     {
         $producto = Producto::findOrFail($id);

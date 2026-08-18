@@ -17,10 +17,10 @@
       </div>
       <nav class="menu-navegacion">
         <a href="/" class="opcion-menu">Principal</a>
-        <a href="Mesas" class="opcion-menu"> Mesas</a>
+        <a href="#" class="opcion-menu">Mesas</a>
         <a href="{{ route('producto.index') }}" class="opcion-menu activa">Producto</a>
         <a href="#" class="opcion-menu">Ventas</a>
-        <a href="ProductoLlevar" class="opcion-menu">Para Llevar</a>
+        <a href="#" class="opcion-menu">Para Llevar</a>
       </nav>
     </aside>
 
@@ -29,9 +29,9 @@
       <header class="encabezado-seccion">
         <h2>Gestión de Productos</h2>
 
-        <!-- Mensaje con id "mensajeStatus" para que JS lo identifique y lo desaparezca -->
+        <!-- Mensaje de confirmación/éxito -->
         @if (session('status'))
-          <div id="mensajeStatus" style="background: #d4edda; color: #155724; padding: 10px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #c3e6cb;">
+          <div id="mensajeStatus" class="mensaje-exito">
             {{ session('status') }}
           </div>
         @endif
@@ -39,14 +39,33 @@
         <button id="btnAbrirModal" class="btn-agregar">➕ Nuevo Producto</button>
       </header>
 
+      <!-- BOTONES DE FILTRADO DE CATEGORÍAS -->
+      <div class="contenedor-filtros">
+        <!-- Botón para ver todos los productos -->
+        <button
+          class="btn-filtro {{ $categoriaSeleccionada == 'todas' ? 'activo' : '' }}"
+          data-id="todas">
+          Todas
+        </button>
+
+        <!-- Botones dinámicos desde la BD (Sandwich, Pizza, Empanada) -->
+        @foreach ($categorias as $cat)
+          <button
+            class="btn-filtro {{ $categoriaSeleccionada == $cat->id ? 'activo' : '' }}"
+            data-id="{{ $cat->id }}">
+            {{ $cat->nombre }}
+          </button>
+        @endforeach
+      </div>
+
       <!-- GRILLA DE TARJETAS DE PRODUCTOS -->
       <section id="grillaProductos" class="grilla-productos">
 
-        @foreach ($productos as $producto)
+        @forelse ($productos as $producto)
           <div class="tarjeta-producto" id="producto-{{ $producto->id }}">
             <div class="foto-producto">
               @if($producto->imagen)
-                <img src="{{ asset('storage/' . $producto->imagen) }}" alt="{{ $producto->nombre }}" style="width:100%; height:100%; object-fit:cover;">
+                <img src="{{ asset('storage/' . $producto->imagen) }}" alt="{{ $producto->nombre }}">
               @else
                 🖼️
               @endif
@@ -54,14 +73,18 @@
 
             <div class="info-producto">
               <h4>{{ $producto->nombre }}</h4>
-              <p>${{ $producto->precio }}</p>
+              <p class="categoria-etiqueta">
+                Categoría: <strong>{{ $producto->categoria->nombre ?? 'Sin Categoría' }}</strong>
+              </p>
+              <p class="precio-producto"><strong>${{ $producto->precio }}</strong></p>
             </div>
 
             <div class="acciones-tarjeta">
               <button class="btn-accion btn-modificar"
                       data-id="{{ $producto->id }}"
                       data-nombre="{{ $producto->nombre }}"
-                      data-precio="{{ $producto->precio }}">✏️ Modificar</button>
+                      data-precio="{{ $producto->precio }}"
+                      data-fk_id_categoira="{{ $producto->fk_id_categoira }}">✏️ Modificar</button>
 
               <form action="{{ route('producto.destroy', $producto->id) }}" method="POST" onsubmit="return confirm('¿Seguro que deseas eliminar este producto?')" style="display:inline;">
                 @csrf
@@ -70,14 +93,18 @@
               </form>
             </div>
           </div>
-        @endforeach
+        @empty
+          <p class="sin-productos">No hay productos registrados en esta categoría.</p>
+        @endforelse
 
       </section>
     </main>
 
   </div>
 
-  <!-- MODAL 1: REGISTRAR PRODUCTO -->
+  <!-- ========================================== -->
+  <!-- MODAL 1: REGISTRAR PRODUCTO                -->
+  <!-- ========================================== -->
   <div id="modalProducto" class="modal-overlay hidden">
     <div class="modal-content">
       <h3>Agregar Nuevo Producto</h3>
@@ -88,19 +115,32 @@
         <div class="grupo-campo">
           <label for="nombre">Nombre del Producto:</label>
           <input type="text" id="nombre" name="nombre" required placeholder="Ej: Lomito Completo" value="{{ old('nombre') }}">
-          @error('nombre') <span style="color:red; font-size:12px;">{{ $message }}</span> @enderror
+          @error('nombre') <span class="error-texto">{{ $message }}</span> @enderror
+        </div>
+
+        <div class="grupo-campo">
+          <label for="fk_id_categoira">Categoría:</label>
+          <select id="fk_id_categoira" name="fk_id_categoira" required class="select-categoria">
+            <option value="">-- Selecciona una categoría --</option>
+            @foreach ($categorias as $cat)
+              <option value="{{ $cat->id }}" {{ old('fk_id_categoira') == $cat->id ? 'selected' : '' }}>
+                {{ $cat->nombre }}
+              </option>
+            @endforeach
+          </select>
+          @error('fk_id_categoira') <span class="error-texto">{{ $message }}</span> @enderror
         </div>
 
         <div class="grupo-campo">
           <label for="precio">Precio ($):</label>
           <input type="number" id="precio" name="precio" required placeholder="Ej: 3500" value="{{ old('precio') }}">
-          @error('precio') <span style="color:red; font-size:12px;">{{ $message }}</span> @enderror
+          @error('precio') <span class="error-texto">{{ $message }}</span> @enderror
         </div>
 
         <div class="grupo-campo">
           <label for="imagen">Imagen del Producto:</label>
           <input type="file" id="imagen" name="imagen" accept="image/*">
-          @error('imagen') <span style="color:red; font-size:12px;">{{ $message }}</span> @enderror
+          @error('imagen') <span class="error-texto">{{ $message }}</span> @enderror
         </div>
 
         <div class="modal-botones">
@@ -111,7 +151,9 @@
     </div>
   </div>
 
-  <!-- MODAL 2: MODIFICAR PRODUCTO -->
+  <!-- ========================================== -->
+  <!-- MODAL 2: MODIFICAR PRODUCTO                -->
+  <!-- ========================================== -->
   <div id="modalEditarProducto" class="modal-overlay hidden">
     <div class="modal-content">
       <h3>Modificar Producto</h3>
@@ -123,6 +165,15 @@
         <div class="grupo-campo">
           <label for="edit_nombre">Nombre del Producto:</label>
           <input type="text" id="edit_nombre" name="nombre" required>
+        </div>
+
+        <div class="grupo-campo">
+          <label for="edit_fk_id_categoira">Categoría:</label>
+          <select id="edit_fk_id_categoira" name="fk_id_categoira" required class="select-categoria">
+            @foreach ($categorias as $cat)
+              <option value="{{ $cat->id }}">{{ $cat->nombre }}</option>
+            @endforeach
+          </select>
         </div>
 
         <div class="grupo-campo">

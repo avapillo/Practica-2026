@@ -1,53 +1,67 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Referencias para el Modal de Crear
-    const modalCrear = document.getElementById('modalProducto');
-    const btnAbrirCrear = document.getElementById('btnAbrirModal');
-    const btnCerrarCrear = document.getElementById('btnCerrarModal');
-    const formProducto = document.getElementById('formProducto');
+  // ----------------------------------------------------
+  // 1. MODAL AGREGAR PRODUCTO
+  // ----------------------------------------------------
+  const btnAbrirModal = document.getElementById('btnAbrirModal');
+  const btnCerrarModal = document.getElementById('btnCerrarModal');
+  const modalProducto = document.getElementById('modalProducto');
+  const formProducto = document.getElementById('formProducto');
 
-    // Referencias para el Modal de Editar
-    const modalEditar = document.getElementById('modalEditarProducto');
-    const btnCerrarEditar = document.getElementById('btnCerrarModalEditar');
-    const inputEditId = document.getElementById('edit_id');
-    const inputEditNombre = document.getElementById('edit_nombre');
-    const inputEditPrecio = document.getElementById('edit_precio');
-
-    // 1. Abrir/Cerrar Modal Crear
-    if (btnAbrirCrear && modalCrear) {
-        btnAbrirCrear.addEventListener('click', () => modalCrear.classList.remove('hidden'));
-    }
-    if (btnCerrarCrear && modalCrear && formProducto) {
-        btnCerrarCrear.addEventListener('click', () => {
-            modalCrear.classList.add('hidden');
-            formProducto.reset();
-        });
-    }
-
-    // 2. Cargar datos en Modal Editar al hacer clic en "Modificar"
-    document.querySelectorAll('.btn-modificar').forEach(boton => {
-        boton.addEventListener('click', () => {
-            inputEditId.value = boton.getAttribute('data-id');
-            inputEditNombre.value = boton.getAttribute('data-nombre');
-            inputEditPrecio.value = boton.getAttribute('data-precio');
-
-            modalEditar.classList.remove('hidden');
-        });
+  if (btnAbrirModal && modalProducto) {
+    btnAbrirModal.addEventListener('click', () => {
+      modalProducto.classList.remove('hidden');
     });
+  }
 
-    if (btnCerrarEditar && modalEditar) {
-        btnCerrarEditar.addEventListener('click', () => modalEditar.classList.add('hidden'));
-    }
+  if (btnCerrarModal && modalProducto) {
+    btnCerrarModal.addEventListener('click', () => {
+      modalProducto.classList.add('hidden');
+      if (formProducto) formProducto.reset(); // Limpia los campos al cerrar
+    });
+  }
 
-    // 3. Temporizador para ocultar el mensaje de éxito (session status) automáticamente
-    const mensajeStatus = document.getElementById('mensajeStatus');
-    if (mensajeStatus) {
-        setTimeout(() => {
-            mensajeStatus.style.transition = 'opacity 0.5s ease';
-            mensajeStatus.style.opacity = '0';
+  // ----------------------------------------------------
+  // 2. MODAL MODIFICAR PRODUCTO
+  // ----------------------------------------------------
+  const modalEditar = document.getElementById('modalEditarProducto');
+  const btnCerrarEditar = document.getElementById('btnCerrarModalEditar');
+  const inputEditId = document.getElementById('edit_id');
+  const inputEditNombre = document.getElementById('edit_nombre');
+  const inputEditPrecio = document.getElementById('edit_precio');
+  const selectEditCategoria = document.getElementById('edit_fk_id_categoira');
 
-            setTimeout(() => {
-                mensajeStatus.remove();
-            }, 500); // Se elimina del HTML tras terminar la animación de desvanecimiento
-        }, 3500); // 3.5 segundos visible
-    }
+  document.querySelectorAll('.btn-modificar').forEach(boton => {
+    boton.addEventListener('click', () => {
+      // Obtenemos los datos desde los atributos data-* de la tarjeta
+      const id = boton.getAttribute('data-id');
+      const nombre = boton.getAttribute('data-nombre');
+      const precio = boton.getAttribute('data-precio');
+      const fkCategoria = boton.getAttribute('data-fk_id_categoira');
+
+      // Cargamos los datos en el formulario de edición
+      if (inputEditId) inputEditId.value = id;
+      if (inputEditNombre) inputEditNombre.value = nombre;
+      if (inputEditPrecio) inputEditPrecio.value = precio;
+      if (selectEditCategoria) selectEditCategoria.value = fkCategoria;
+
+      if (modalEditar) modalEditar.classList.remove('hidden');
+    });
+  });
+
+  if (btnCerrarEditar && modalEditar) {
+    btnCerrarEditar.addEventListener('click', () => {
+      modalEditar.classList.add('hidden');
+    });
+  }
+
+  // ----------------------------------------------------
+  // 3. FILTRADO POR CATEGORÍAS
+  // ----------------------------------------------------
+  document.querySelectorAll('.btn-filtro').forEach(boton => {
+    boton.addEventListener('click', () => {
+      const categoriaId = boton.getAttribute('data-id');
+      // Redirige pasando el ID por la URL
+      window.location.href = `/Producto?fk_id_categoira=${categoriaId}`;
+    });
+  });
 });

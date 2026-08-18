@@ -2,19 +2,20 @@
 
 namespace App\Models;
 
-// CORRECCIÓN: Volvemos a importar la clase base real de Laravel
 use Illuminate\Database\Eloquent\Model;
 
-// Tu clase se llama Producto y extiende de Model
 class Producto extends Model
 {
-    // Apunta a tu tabla de MySQL 'productos'
     protected $table = "productos";
 
-    // Campos autorizados para guardar en español
-    protected $fillable = ["nombre", "precio", "imagen"];
+    protected $fillable = ["nombre", "precio", "imagen", "fk_id_categoira"];
 
-    // Bloqueo de registro de timestamps automatica,
-    // Se debe de modifcar la tabla si se decear guardar esos datos
     public $timestamps = false;
+
+    public function categoria()
+    {
+        // El tercer parámetro es el nombre exacto de la Primary Key en la tabla 'categorias'
+        // Cambia 'id' por el nombre real de la PK en tu tabla categorías si es diferente (ej: 'id_categoria')
+        return $this->belongsTo(Categoria::class, 'fk_id_categoira', 'id');
+    }
 }
