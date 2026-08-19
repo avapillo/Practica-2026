@@ -74,7 +74,7 @@
             <div class="info-producto">
               <h4>{{ $producto->nombre }}</h4>
               <p class="categoria-etiqueta">
-                Categoría: <strong>{{ $producto->categoria->nombre ?? 'Sin Categoría' }}</strong>
+                Categoría: <strong>{{ $producto->categoria->categoria ?? 'Sin Categoría' }}</strong>
               </p>
               <p class="precio-producto"><strong>${{ $producto->precio }}</strong></p>
             </div>
@@ -124,7 +124,7 @@
             <option value="">-- Selecciona una categoría --</option>
             @foreach ($categorias as $cat)
               <option value="{{ $cat->id }}" {{ old('fk_id_categoira') == $cat->id ? 'selected' : '' }}>
-                {{ $cat->nombre }}
+                {{ $cat->categoria }}
               </option>
             @endforeach
           </select>

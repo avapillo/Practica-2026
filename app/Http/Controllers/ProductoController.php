@@ -58,7 +58,7 @@ class ProductoController extends Controller
             'id'              => 'required|exists:productos,id',
             'nombre'          => 'required|string|max:255',
             'precio'          => 'required|integer|min:0',
-            'fk_id_categoira' => 'required|exists:categorias,id',
+            'fk_id_categoira' => 'required|exists:categoria,id',
             'imagen'          => 'nullable|image|max:20240',
         ]);
 

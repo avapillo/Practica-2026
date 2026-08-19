@@ -371,3 +371,42 @@ body {
 .hidden {
   display: none !important;
 }
+
+/* ==========================================
+   BOTONES DE FILTRADO POR CATEGORÍA
+   ========================================== */
+.contenedor-filtros {
+  display: flex;
+  gap: 12px;
+  margin-top: -10px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.btn-filtro {
+  background-color: #ffffff;
+  color: #0f172a;
+  border: 1px solid #cbd5e1;
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.btn-filtro:hover {
+  background-color: #38bdf8;
+  color: #0f172a;
+  border-color: #38bdf8;
+}
+
+/* Botón Activo: idéntico al botón "+ Nuevo Producto" */
+.btn-filtro.activo {
+  background-color: #38bdf8;
+  color: #0f172a;
+  border: 1px solid #38bdf8;
+  box-shadow: 0 4px 6px -1px rgba(56, 189, 248, 0.3);
+}
