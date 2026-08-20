@@ -1,5 +1,6 @@
 // 1. URL de tu propia API en Laravel (historial de caja)
-const DIRECCION_API = 'http://127.0.0.1:8000/api/historial-caja';
+// const DIRECCION_API = 'http://127.0.0.1:8000/api/historial-caja';
+const DIRECCION_API = '/api/historial-caja';
 
 // 2. Esperar a que el HTML esté listo en el navegador
 document.addEventListener('DOMContentLoaded', () => {
