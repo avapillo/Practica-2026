@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 // Ruta principal que apunta a home.blade.php
-Route::get('/Inicio', function () {
+Route::get('/', function () {
     return view('home');
 })->name('home');
 
