@@ -2,23 +2,36 @@ document.addEventListener('DOMContentLoaded', () => {
   // ----------------------------------------------------
   // 1. MODAL AGREGAR PRODUCTO
   // ----------------------------------------------------
-  const btnAbrirModal = document.getElementById('btnAbrirModal');
-  const btnCerrarModal = document.getElementById('btnCerrarModal');
+  const btnAbrirModalProducto = document.getElementById('btnAbrirModalProducto');
+  const btnCerrarModalProducto = document.getElementById('btnCerrarModal');
   const modalProducto = document.getElementById('modalProducto');
   const formProducto = document.getElementById('formProducto');
 
-  if (btnAbrirModal && modalProducto) {
-    btnAbrirModal.addEventListener('click', () => {
+  if (btnAbrirModalProducto && modalProducto) {
+    btnAbrirModalProducto.addEventListener('click', () => {
       modalProducto.classList.remove('hidden');
     });
   }
 
-  if (btnCerrarModal && modalProducto) {
-    btnCerrarModal.addEventListener('click', () => {
+  if (btnCerrarModalProducto && modalProducto) {
+    btnCerrarModalProducto.addEventListener('click', () => {
       modalProducto.classList.add('hidden');
       if (formProducto) formProducto.reset(); // Limpia los campos al cerrar
     });
   }
+
+  // MODAL DE REGISTRO CATEGORIA
+
+   const btnAbrirModalCategoria = document.getElementById('btnAbrirModalCategoria');
+   const modalCategoria = document.getElementById('modalCategoria');
+
+    // Boton de modal para funcioón de registro de categoria
+  if (btnAbrirModalCategoria && modalCategoria) {
+     btnAbrirModalCategoria.addEventListener('click', () => {
+     modalCategoria.classList.remove('hidden');
+    })
+  }
+
 
   // ----------------------------------------------------
   // 2. MODAL MODIFICAR PRODUCTO

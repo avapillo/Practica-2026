@@ -91,4 +91,18 @@ class ProductoController extends Controller
 
         return redirect()->route('producto.index')->with('status', '¡Producto eliminado con éxito!');
     }
+
+    // Registro de la categoria
+     public function registroCategoria(Request $request){
+
+        $request->validate([
+            'categoria' => 'required|string'
+        ]);
+
+        Categoria::create([
+            'categoria' => $request->categoria
+        ]);
+
+        return redirect()->route('categoria.store')->with('status', '¡Categoria registrada con éxito!');
+    }
 }

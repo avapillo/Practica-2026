@@ -36,7 +36,9 @@
           </div>
         @endif
 
-        <button id="btnAbrirModal" class="btn-agregar">➕ Nuevo Producto</button>
+        <button id="btnAbrirModalProducto" class="btn-agregar">➕ Nuevo Producto</button>
+          <!-- <button id="btnAbrirModalCategoria" class="btn-agregar">➕ Nueva Categoria</button> -->
+
       </header>
 
       <!-- BOTONES DE FILTRADO DE CATEGORÍAS -->
@@ -53,7 +55,7 @@
           <button
             class="btn-filtro {{ $categoriaSeleccionada == $cat->id ? 'activo' : '' }}"
             data-id="{{ $cat->id }}">
-            {{ $cat->nombre }}
+            {{ $cat->categoria }}
           </button>
         @endforeach
       </div>
@@ -171,7 +173,7 @@
           <label for="edit_fk_id_categoira">Categoría:</label>
           <select id="edit_fk_id_categoira" name="fk_id_categoira" required class="select-categoria">
             @foreach ($categorias as $cat)
-              <option value="{{ $cat->id }}">{{ $cat->nombre }}</option>
+              <option value="{{ $cat->id }}">{{ $cat->categoria }}</option>
             @endforeach
           </select>
         </div>
@@ -192,6 +194,31 @@
         </div>
       </form>
     </div>
+  </div>
+
+   <!-- ========================================== -->
+  <!-- MODAL 3: REGISTRAR CATEGORIA               -->
+  <!-- ========================================== -->
+  <div id="modalCategoria" class="modal-overlay hidden">
+    <div class="modal-content">
+      <h3>Agregar Nueva Categoría</h3>
+
+      <form id="formProducto" action="{{ route('categoria.store') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+
+        <div class="grupo-campo">
+          <label for="nombre">Nombre de la Categoría:</label>
+          <input type="text" id="nombre" name="nombre" required placeholder="Ej: Desayunos" value="{{ old('nombre') }}">
+          @error('nombre') <span class="error-texto">{{ $message }}</span> @enderror
+        </div>
+
+        <div class="modal-botones">
+          <button type="button" id="btnCerrarModalCategoria" class="btn-cancelar">Cancelar</button>
+          <button type="submit" class="btn-guardarCategoria">Guardar Producto</button>
+        </div>
+      </form>
+    </div>
+
   </div>
 
   <script src="{{ asset('js/producto.js') }}"></script>

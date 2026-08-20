@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\CategoriaController;
 
 // Ruta principal que apunta a home.blade.php
 Route::get('/', function () {
@@ -27,3 +28,5 @@ Route::post('/Producto/guardar', [ProductoController::class, 'registroProducto']
 Route::post('/Producto/modificar', [ProductoController::class, 'modificarProducto'])->name('producto.update');
 
 Route::delete('/Producto/{id}/eliminar', [ProductoController::class, 'eliminarProducto'])->name('producto.destroy');
+
+Route::post('/Categoria/guardar', [ProductoController::class, 'registroCategoria'])->name('categoria.store');
