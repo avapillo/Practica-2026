@@ -17,4 +17,3 @@ cat << 'EOF' > vercel.json
         }
     ]
 }
-EOF
