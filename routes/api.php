@@ -8,8 +8,8 @@ use App\Http\Controllers\HistorialCajaController;
 use App\Http\Controllers\ProductoController;
 
 // Ruta que ya tenías
-// Route::get('/historial-caja', [HistorialCajaController::class, 'index']);
-
+Route::get('/historial-caja', [HistorialCajaController::class, 'index']);
+/*
 Route::get('/historial-caja', function () {
     // Retornamos un arreglo ficticio para probar que el HTML y JS dibujen la tabla
     return response()->json([
@@ -23,6 +23,6 @@ Route::get('/historial-caja', function () {
         ]
     ]);
 });
-
+*/
 // 2. AGREGA ESTA RUTA: Es la que procesará el formulario con JavaScript (POST)
 Route::post('/registro-producto', [ProductoController::class, 'registroProducto']);

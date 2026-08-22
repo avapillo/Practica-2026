@@ -8,7 +8,7 @@ class Producto extends Model
 {
     protected $table = "productos";
 
-    protected $fillable = ["nombre", "precio", "imagen", "fk_id_categoira"];
+    protected $fillable = ["nombre", "precio", "imagen", "fk_id_categoria"];
 
     public $timestamps = false;
 
@@ -16,6 +16,6 @@ class Producto extends Model
     {
         // El tercer parámetro es el nombre exacto de la Primary Key en la tabla 'categorias'
         // Cambia 'id' por el nombre real de la PK en tu tabla categorías si es diferente (ej: 'id_categoria')
-        return $this->belongsTo(Categoria::class, 'fk_id_categoira', 'id');
+        return $this->belongsTo(Categoria::class, 'fk_id_categoria', 'id');
     }
 }

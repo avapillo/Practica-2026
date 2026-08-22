@@ -33,7 +33,7 @@ class ProductoController extends Controller
         $request->validate([
             'nombre'          => 'required|string|max:255',
             'precio'          => 'required|integer|min:0',
-            'fk_id_categoira' => 'required|exists:categoria,id',
+            'fk_id_categoria' => 'required|exists:categoria,id',
             'imagen'          => 'nullable|image|max:20240',
         ]);
 
