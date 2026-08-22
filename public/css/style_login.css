@@ -1,0 +1,188 @@
+/* --- ESTILOS GENERALES Y VARIABLES --- */
+:root {
+    --bg-main: #0f172a;        /* Azul oscuro de fondo */
+    --card-bg: #1e293b;       /* Azul contenedor */
+    --accent-blue: #0284c7;   /* Azul primario (botones) */
+    --accent-hover: #0369a1;  /* Azul oscuro hover */
+    --text-primary: #f8fafc;  /* Texto blanco/claro */
+    --text-secondary: #94a3b8;/* Texto gris */
+    --border-color: #334155;  /* Líneas y bordes */
+    --input-bg: #0f172a;      /* Fondo inputs */
+    --danger-color: #ef4444;  /* Color errores */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+body.login-body {
+    background-color: var(--bg-main);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* --- TARJETA DE LOGIN --- */
+.login-card {
+    background-color: var(--card-bg);
+    width: 100%;
+    max-width: 420px;
+    padding: 40px 30px;
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.brand-logo {
+    width: 60px;
+    height: 60px;
+    background-color: var(--accent-blue);
+    color: #ffffff;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    margin: 0 auto 15px auto;
+}
+
+.login-header h2 {
+    color: var(--text-primary);
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.login-header p {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+/* --- FORMULARIO Y INPUTS --- */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    color: var(--text-primary);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    position: absolute;
+    left: 14px;
+    color: var(--text-secondary);
+    font-size: 16px;
+}
+
+.input-container input {
+    width: 100%;
+    padding: 12px 14px 12px 42px;
+    background-color: var(--input-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 14px;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.input-container input:focus {
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.2);
+}
+
+.input-container input::placeholder {
+    color: #64748b;
+}
+
+/* --- OPCIONES SECUNDARIAS --- */
+.form-opciones {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-secondary);
+    cursor: pointer;
+}
+
+.remember-me input[type="checkbox"] {
+    accent-color: var(--accent-blue);
+    width: 16px;
+    height: 16px;
+}
+
+/* --- BOTÓN DE INGRESO --- */
+.btn-login {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--accent-blue);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    margin-top: 10px;
+}
+
+.btn-login:hover {
+    background-color: var(--accent-hover);
+}
+
+.btn-login:active {
+    transform: scale(0.98);
+}
+
+/* --- ALERTAS Y ERRORES --- */
+.alerta-error {
+    background-color: rgba(239, 68, 68, 0.1);
+    border: 1px solid var(--danger-color);
+    color: var(--danger-color);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.error-texto {
+    color: var(--danger-color);
+    font-size: 12px;
+}

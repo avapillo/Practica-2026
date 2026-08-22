@@ -3,9 +3,22 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\CategoriaController;
+// Login
+
+use App\Http\Controllers\LoginController;
+
+// Mostrar formulario
+Route::get('/', [LoginController::class, 'mostrarLogin'])->name('login');
+
+// Recibir formulario por POST
+Route::post('/login', [LoginController::class, 'validarUsuario'])->name('login.post');
+
+// Cerrar sesión
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+
 
 // Ruta principal que apunta a home.blade.php
-Route::get('/', function () {
+Route::get('/Inicio', function () {
     return view('home');
 })->name('home');
 
