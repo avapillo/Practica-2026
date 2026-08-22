@@ -14,8 +14,7 @@ class Producto extends Model
 
     public function categoria()
     {
-        // El tercer parámetro es el nombre exacto de la Primary Key en la tabla 'categorias'
-        // Cambia 'id' por el nombre real de la PK en tu tabla categorías si es diferente (ej: 'id_categoria')
+        // Relación: fk_id_categoria de la tabla productos apunta a 'id' de la tabla categoria
         return $this->belongsTo(Categoria::class, 'fk_id_categoria', 'id');
     }
 }

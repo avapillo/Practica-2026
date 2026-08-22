@@ -20,28 +20,36 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // MODAL DE REGISTRO CATEGORIA
+  // ----------------------------------------------------
+  // 2. MODAL REGISTRO CATEGORÍA
+  // ----------------------------------------------------
+  const btnAbrirModalCategoria = document.getElementById('btnAbrirModalCategoria');
+  const btnCerrarModalCategoria = document.getElementById('btnCerrarModalCategoria'); // ✅ Agregado
+  const modalCategoria = document.getElementById('modalCategoria');
+  const formCategoria = document.getElementById('formCategoria');
 
-   const btnAbrirModalCategoria = document.getElementById('btnAbrirModalCategoria');
-   const modalCategoria = document.getElementById('modalCategoria');
-
-    // Boton de modal para funcioón de registro de categoria
   if (btnAbrirModalCategoria && modalCategoria) {
-     btnAbrirModalCategoria.addEventListener('click', () => {
-     modalCategoria.classList.remove('hidden');
-    })
+    btnAbrirModalCategoria.addEventListener('click', () => {
+      modalCategoria.classList.remove('hidden');
+    });
   }
 
+  if (btnCerrarModalCategoria && modalCategoria) { // ✅ Agregado evento de cierre
+    btnCerrarModalCategoria.addEventListener('click', () => {
+      modalCategoria.classList.add('hidden');
+      if (formCategoria) formCategoria.reset();
+    });
+  }
 
   // ----------------------------------------------------
-  // 2. MODAL MODIFICAR PRODUCTO
+  // 3. MODAL MODIFICAR PRODUCTO
   // ----------------------------------------------------
   const modalEditar = document.getElementById('modalEditarProducto');
   const btnCerrarEditar = document.getElementById('btnCerrarModalEditar');
   const inputEditId = document.getElementById('edit_id');
   const inputEditNombre = document.getElementById('edit_nombre');
   const inputEditPrecio = document.getElementById('edit_precio');
-  const selectEditCategoria = document.getElementById('edit_fk_id_categoira');
+  const selectEditCategoria = document.getElementById('edit_fk_id_categoria'); // ✅ Corregido typo
 
   document.querySelectorAll('.btn-modificar').forEach(boton => {
     boton.addEventListener('click', () => {
@@ -49,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const id = boton.getAttribute('data-id');
       const nombre = boton.getAttribute('data-nombre');
       const precio = boton.getAttribute('data-precio');
-      const fkCategoria = boton.getAttribute('data-fk_id_categoira');
+      const fkCategoria = boton.getAttribute('data-fk_id_categoria'); // ✅ Corregido typo
 
       // Cargamos los datos en el formulario de edición
       if (inputEditId) inputEditId.value = id;
@@ -68,13 +76,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ----------------------------------------------------
-  // 3. FILTRADO POR CATEGORÍAS
+  // 4. FILTRADO POR CATEGORÍAS
   // ----------------------------------------------------
   document.querySelectorAll('.btn-filtro').forEach(boton => {
     boton.addEventListener('click', () => {
       const categoriaId = boton.getAttribute('data-id');
       // Redirige pasando el ID por la URL
-      window.location.href = `/Producto?fk_id_categoira=${categoriaId}`;
+      window.location.href = `/Producto?fk_id_categoria=${categoriaId}`; // ✅ Corregido typo
     });
   });
 });

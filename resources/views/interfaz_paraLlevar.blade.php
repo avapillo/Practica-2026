@@ -20,11 +20,11 @@
 
       <!-- Opciones del menú -->
       <nav class="menu-navegacion">
-        <a href="/" class="opcion-menu activs">Principal</a>
-        <a href="Mesas" class="opcion-menu"> Mesas</a>
-        <a href="Producto" class="opcion-menu">Producto</a>
+        <a href="{{ route('home') }}" class="opcion-menu">Principal</a>
+        <a href="{{ route('intefaz_mesa') }}" class="opcion-menu">Mesas</a>
+        <a href="{{ route('producto.index') }}" class="opcion-menu">Producto</a>
         <a href="#" class="opcion-menu">Ventas</a>
-        <a href="ProductoLlevar" class="opcion-menu">Para Llevar</a>
+        <a href="{{ route('interfaz_paraLlevar') }}" class="opcion-menu activa">Para Llevar</a>
       </nav>
     </aside>
 

@@ -11,7 +11,7 @@ class ProductoController extends Controller
 {
     public function mostrarProducto(Request $request)
     {
-        $categoriaSeleccionada = $request->query('fk_id_categoira', 'todas');
+        $categoriaSeleccionada = $request->query('fk_id_categoria', 'todas');
 
         // Traemos las categorías de la BD
         $categorias = Categoria::all();
@@ -21,7 +21,7 @@ class ProductoController extends Controller
             $productos = Producto::with('categoria')->get();
         } else {
             $productos = Producto::with('categoria')
-                ->where('fk_id_categoira', $categoriaSeleccionada)
+                ->where('fk_id_categoria', $categoriaSeleccionada)
                 ->get();
         }
 
@@ -45,7 +45,7 @@ class ProductoController extends Controller
         Producto::create([
             'nombre'          => $request->nombre,
             'precio'          => $request->precio,
-            'fk_id_categoira' => $request->fk_id_categoira,
+            'fk_id_categoria' => $request->fk_id_categoria, // ✅ Corregido el typo 'categoira'
             'imagen'          => $imagen,
         ]);
 
@@ -58,7 +58,7 @@ class ProductoController extends Controller
             'id'              => 'required|exists:productos,id',
             'nombre'          => 'required|string|max:255',
             'precio'          => 'required|integer|min:0',
-            'fk_id_categoira' => 'required|exists:categoria,id',
+            'fk_id_categoria' => 'required|exists:categoria,id',
             'imagen'          => 'nullable|image|max:20240',
         ]);
 
@@ -73,7 +73,7 @@ class ProductoController extends Controller
 
         $producto->nombre          = $request->nombre;
         $producto->precio          = $request->precio;
-        $producto->fk_id_categoira = $request->fk_id_categoira;
+        $producto->fk_id_categoria = $request->fk_id_categoria;
         $producto->save();
 
         return redirect()->route('producto.index')->with('status', '¡Producto modificado con éxito!');
@@ -90,19 +90,5 @@ class ProductoController extends Controller
         $producto->delete();
 
         return redirect()->route('producto.index')->with('status', '¡Producto eliminado con éxito!');
-    }
-
-    // Registro de la categoria
-     public function registroCategoria(Request $request){
-
-        $request->validate([
-            'categoria' => 'required|string'
-        ]);
-
-        Categoria::create([
-            'categoria' => $request->categoria
-        ]);
-
-        return redirect()->route('categoria.store')->with('status', '¡Categoria registrada con éxito!');
     }
 }

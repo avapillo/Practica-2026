@@ -16,11 +16,11 @@
         <h3>Sandwichería Gabriel</h3>
       </div>
       <nav class="menu-navegacion">
-        <a href="/" class="opcion-menu">Principal</a>
-        <a href="#" class="opcion-menu">Mesas</a>
+        <a href="{{ route('home') }}" class="opcion-menu">Principal</a>
+        <a href="{{ route('intefaz_mesa') }}" class="opcion-menu">Mesas</a>
         <a href="{{ route('producto.index') }}" class="opcion-menu activa">Producto</a>
         <a href="#" class="opcion-menu">Ventas</a>
-        <a href="#" class="opcion-menu">Para Llevar</a>
+        <a href="{{ route('interfaz_paraLlevar') }}" class="opcion-menu">Para Llevar</a>
       </nav>
     </aside>
 
@@ -36,8 +36,10 @@
           </div>
         @endif
 
-        <button id="btnAbrirModalProducto" class="btn-agregar">➕ Nuevo Producto</button>
-          <!-- <button id="btnAbrirModalCategoria" class="btn-agregar">➕ Nueva Categoria</button> -->
+        <div class="contenedor-botones-header">
+          <button id="btnAbrirModalProducto" class="btn-agregar">➕ Nuevo Producto</button>
+          <!-- <button id="btnAbrirModalCategoria" class="btn-agregar">➕ Nueva Categoría</button> -->
+        </div>
 
       </header>
 
@@ -50,7 +52,7 @@
           Todas
         </button>
 
-        <!-- Botones dinámicos desde la BD (Sandwich, Pizza, Empanada) -->
+        <!-- Botones dinámicos desde la BD -->
         @foreach ($categorias as $cat)
           <button
             class="btn-filtro {{ $categoriaSeleccionada == $cat->id ? 'activo' : '' }}"
@@ -82,11 +84,12 @@
             </div>
 
             <div class="acciones-tarjeta">
+              <!-- ✅ Corregido data-fk_id_categoria -->
               <button class="btn-accion btn-modificar"
                       data-id="{{ $producto->id }}"
                       data-nombre="{{ $producto->nombre }}"
                       data-precio="{{ $producto->precio }}"
-                      data-fk_id_categoira="{{ $producto->fk_id_categoira }}">✏️ Modificar</button>
+                      data-fk_id_categoria="{{ $producto->fk_id_categoria }}">✏️ Modificar</button>
 
               <form action="{{ route('producto.destroy', $producto->id) }}" method="POST" onsubmit="return confirm('¿Seguro que deseas eliminar este producto?')" style="display:inline;">
                 @csrf
@@ -121,16 +124,17 @@
         </div>
 
         <div class="grupo-campo">
-          <label for="fk_id_categoira">Categoría:</label>
-          <select id="fk_id_categoira" name="fk_id_categoira" required class="select-categoria">
+          <label for="fk_id_categoria">Categoría:</label>
+          <!-- ✅ Corregido name e id a fk_id_categoria -->
+          <select id="fk_id_categoria" name="fk_id_categoria" required class="select-categoria">
             <option value="">-- Selecciona una categoría --</option>
             @foreach ($categorias as $cat)
-              <option value="{{ $cat->id }}" {{ old('fk_id_categoira') == $cat->id ? 'selected' : '' }}>
+              <option value="{{ $cat->id }}" {{ old('fk_id_categoria') == $cat->id ? 'selected' : '' }}>
                 {{ $cat->categoria }}
               </option>
             @endforeach
           </select>
-          @error('fk_id_categoira') <span class="error-texto">{{ $message }}</span> @enderror
+          @error('fk_id_categoria') <span class="error-texto">{{ $message }}</span> @enderror
         </div>
 
         <div class="grupo-campo">
@@ -170,8 +174,9 @@
         </div>
 
         <div class="grupo-campo">
-          <label for="edit_fk_id_categoira">Categoría:</label>
-          <select id="edit_fk_id_categoira" name="fk_id_categoira" required class="select-categoria">
+          <label for="edit_fk_id_categoria">Categoría:</label>
+          <!-- ✅ Corregido name e id a fk_id_categoria -->
+          <select id="edit_fk_id_categoria" name="fk_id_categoria" required class="select-categoria">
             @foreach ($categorias as $cat)
               <option value="{{ $cat->id }}">{{ $cat->categoria }}</option>
             @endforeach
@@ -196,29 +201,29 @@
     </div>
   </div>
 
-   <!-- ========================================== -->
-  <!-- MODAL 3: REGISTRAR CATEGORIA               -->
+  <!-- ========================================== -->
+  <!-- MODAL 3: REGISTRAR CATEGORÍA              -->
   <!-- ========================================== -->
   <div id="modalCategoria" class="modal-overlay hidden">
     <div class="modal-content">
       <h3>Agregar Nueva Categoría</h3>
 
-      <form id="formProducto" action="{{ route('categoria.store') }}" method="POST" enctype="multipart/form-data">
+      <form id="formCategoria" action="{{ route('categoria.store') }}" method="POST">
         @csrf
 
         <div class="grupo-campo">
-          <label for="nombre">Nombre de la Categoría:</label>
-          <input type="text" id="nombre" name="nombre" required placeholder="Ej: Desayunos" value="{{ old('nombre') }}">
-          @error('nombre') <span class="error-texto">{{ $message }}</span> @enderror
+          <label for="input_categoria">Nombre de la Categoría:</label>
+          <!-- ✅ Corregido name a 'categoria' para el CategoriaController -->
+          <input type="text" id="input_categoria" name="categoria" required placeholder="Ej: Desayunos" value="{{ old('categoria') }}">
+          @error('categoria') <span class="error-texto">{{ $message }}</span> @enderror
         </div>
 
         <div class="modal-botones">
           <button type="button" id="btnCerrarModalCategoria" class="btn-cancelar">Cancelar</button>
-          <button type="submit" class="btn-guardarCategoria">Guardar Producto</button>
+          <button type="submit" class="btn-guardar">Guardar Categoría</button>
         </div>
       </form>
     </div>
-
   </div>
 
   <script src="{{ asset('js/producto.js') }}"></script>
