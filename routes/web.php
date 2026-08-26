@@ -7,6 +7,8 @@ use App\Http\Controllers\CategoriaController;
 
 use App\Http\Controllers\LoginController;
 
+use App\Http\Controllers\AdminPedidoController;
+
 // Mostrar formulario
 Route::get('/', [LoginController::class, 'mostrarLogin'])->name('login');
 
@@ -43,3 +45,7 @@ Route::post('/Producto/modificar', [ProductoController::class, 'modificarProduct
 Route::delete('/Producto/{id}/eliminar', [ProductoController::class, 'eliminarProducto'])->name('producto.destroy');
 
 Route::post('/Categoria/guardar', [ProductoController::class, 'registroCategoria'])->name('categoria.store');
+
+
+// Ruta pedidos para llevar
+Route::get('/admin/pedidos', [AdminPedidoController::class, 'pedido'])->name('muestra_pedido');

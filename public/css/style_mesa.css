@@ -5,22 +5,21 @@ body {
   font-family: 'Segoe UI', Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f1f5f9; /* Fondo gris claro para la aplicación */
-  color: #000000; /* Color del texto de las tabla */
+  background-color: #f1f5f9;
+  color: #334155;
 }
 
-/* Contenedor que usa Flexbox para poner el menú a la izquierda y el contenido a la derecha */
 .contenedor-sitio {
   display: flex;
-  min-height: 100vh; /* Ocupa el 100% de la altura de la pantalla */
+  min-height: 100vh;
 }
 
 /* ==========================================
-   ESTILOS DE LA BARRA LATERAL (MENU)
+   BARRA LATERAL (MENÚ)
    ========================================== */
 .barra-lateral {
-  width: 260px; /* Ancho fijo del menú lateral */
-  background-color: #0f172a; /* Azul muy oscuro/negro */
+  width: 260px;
+  background-color: #0f172a;
   color: #ffffff;
   display: flex;
   flex-direction: column;
@@ -30,13 +29,13 @@ body {
 .logo-sistema {
   padding: 20px;
   text-align: center;
-  border-bottom: 3px solid #1e293b; /* Línea divisoria sutil */
+  border-bottom: 3px solid #1e293b;
 }
 
 .logo-sistema h3 {
   margin: 0;
   font-size: 1.2rem;
-  color: #38bdf8; /* Azul celeste llamativo */
+  color: #38bdf8;
 }
 
 .menu-navegacion {
@@ -45,18 +44,17 @@ body {
   padding: 15px 0;
 }
 
-/* Estilo para cada botón/enlace del menú */
 .opcion-menu {
-  color: #94a3b8; /* Gris claro para texto no seleccionado */
+  color: #93a9c8;
   padding: 12px 20px;
-  text-decoration: none; /* Quita el subrayado */
+  text-decoration: none;
   display: block;
-  transition: all 0.3s ease; /* Suaviza el cambio de color */
+  transition: all 0.3s ease;
 }
 
-/* Cuando pasas el mouse por encima o la opción está activa */
-.opcion-menu:hover, .opcion-menu.activa {
-  background-color: #1e293b; /* Fondo un poco más claro */
-  color: #ffffff;            /* Texto blanco */
-  border-left: 4px solid #38bdf8; /* Barra celeste decorativa a la izquierda */
+.opcion-menu:hover,
+.opcion-menu.activa {
+  background-color: #1e293b;
+  color: #ffffff;
+  border-left: 4px solid #38bdf8;
 }
